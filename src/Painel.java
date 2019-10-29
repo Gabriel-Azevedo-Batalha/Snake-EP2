@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.JPanel;
 
 public class Painel extends JPanel implements Runnable, KeyListener {
@@ -12,6 +14,11 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	
 	private Thread thread;
 	private boolean running;
+	
+	private Fruta fruta;
+	private ArrayList<Fruta> frutas;
+	
+	private Random r;
 	
 	private Corpo c;
 	private ArrayList<Corpo> snake;
@@ -28,7 +35,10 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		addKeyListener(this);
 		
 		snake = new ArrayList<Corpo>();
-				
+		frutas = new ArrayList<Fruta>();
+		
+		r = new Random();
+		
 		start();
 	}
 	
@@ -61,7 +71,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 		ticks++;
 		
-		if(ticks > 250000) {
+		if(ticks > 750000) {
 			if(right) coordX++;
 			if(left) coordX--;
 			if(down) coordY++;
@@ -75,6 +85,22 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				snake.remove(0);
 			}
 		}
+		if(frutas.size() == 0) {
+			int coordX = r.nextInt(49);
+			int coordY = r.nextInt(49);
+			
+			fruta = new Fruta(coordX, coordY, 10);
+			frutas.add(fruta);
+		}
+		for(int i=0;i<frutas.size();i++) {
+			if(coordX == frutas.get(i).getCoordX() && coordY == frutas.get(i).getCoordY()) {
+				size++;
+				frutas.remove(i);
+				i++;
+			}
+		}
+		//if (coordX)
+		
 	}
 	
 	public void paint(Graphics g) {
@@ -83,15 +109,18 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
 		
-		for (int i=0;i<width/10;i++) {
+		for(int i=0;i<width/10;i++) {
 			g.drawLine(i*10, 0, i*10, height);
 		}
 		
-		for (int i=0;i<height/10;i++) {
+		for(int i=0;i<height/10;i++) {
 			g.drawLine(0, i*10, height, i*10);
 		}
-		for (int i=0;i<snake.size();i++) {
+		for(int i=0;i<snake.size();i++) {
 			snake.get(i).draw(g);
+		}
+		for(int i=0;i<frutas.size();i++) {
+			frutas.get(i).draw(g);
 		}
 		
 	}
