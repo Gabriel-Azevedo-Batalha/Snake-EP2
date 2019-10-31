@@ -71,7 +71,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 		ticks++;
 		
-		if(ticks > 750000) {
+		if(ticks > 1000000) {
 			if(right) coordX++;
 			if(left) coordX--;
 			if(down) coordY++;
@@ -99,8 +99,20 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				i++;
 			}
 		}
-		//if (coordX)
-		
+		for(int i=0;i<snake.size();i++) {
+			if(coordX == snake.get(i).getCoordX() && coordY == snake.get(i).getCoordY()) {
+				if(i != snake.size() -1) {
+					System.out.println("Game over");
+					stop();
+				}
+			}
+		}
+		if (coordX < 0 || coordX > 49 || coordY < 0 || coordY > 49) {
+			//Temporary
+			System.out.println("Game over");
+			stop();
+		}
+			
 	}
 	
 	public void paint(Graphics g) {
