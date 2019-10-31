@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
 public class Main {
@@ -14,10 +16,14 @@ public class Main {
 		frame.pack();
 		frame.setVisible(true);
 		
+		//Game loop
+		while(true) {
+			if(!painel.tick()) {
+				break;
+			}
+		}
 	}
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new Main();
 	}
 

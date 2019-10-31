@@ -62,7 +62,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 	}
 	
-	public void tick() {
+	public boolean tick() {
 		
 		if(snake.size() == 0) {
 			c = new Corpo(coordX, coordY, 10);
@@ -71,7 +71,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 		ticks++;
 		
-		if(ticks > 1000000) {
+		if(ticks > 2000000) {
 			if(right) coordX++;
 			if(left) coordX--;
 			if(down) coordY++;
@@ -86,8 +86,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			}
 		}
 		if(frutas.size() == 0) {
-			int coordX = r.nextInt(49);
-			int coordY = r.nextInt(49);
+			int coordX = r.nextInt(48);
+			int coordY = r.nextInt(48);
 			
 			fruta = new Fruta(coordX, coordY, 10);
 			frutas.add(fruta);
@@ -104,6 +104,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				if(i != snake.size() -1) {
 					System.out.println("Game over");
 					stop();
+					return false;
+					
 				}
 			}
 		}
@@ -111,10 +113,18 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			//Temporary
 			System.out.println("Game over");
 			stop();
-		}
+			return false;
 			
+		}
+		return true;
 	}
 	
+	public ArrayList<Fruta> getFrutas() {
+		return frutas;
+	}
+	public ArrayList<Corpo> getSnake() {
+		return snake;
+	}
 	public void paint(Graphics g) {
 		
 		g.clearRect(0, 0, width, height);
@@ -140,7 +150,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while(running) {
-			tick();
+			//tick();
 			repaint();
 		}
 		
