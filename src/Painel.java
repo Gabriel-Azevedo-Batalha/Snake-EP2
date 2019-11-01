@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 
@@ -68,10 +69,15 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			c = new Corpo(coordX, coordY, 10);
 			snake.add(c);
 		}
+		try {
+			TimeUnit.MILLISECONDS.sleep(70);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//ticks++;
 		
-		ticks++;
-		
-		if(ticks > 2000000) {
+		//if(ticks > 2000000) {
 			if(right) coordX++;
 			if(left) coordX--;
 			if(down) coordY++;
@@ -84,7 +90,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			if(snake.size() > size) {
 				snake.remove(0);
 			}
-		}
+		//}
 		if(frutas.size() == 0) {
 			int coordX = r.nextInt(48);
 			int coordY = r.nextInt(48);
@@ -179,6 +185,12 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			right = false;
 			left = false;
 			down = true;
+		}
+		try {
+			TimeUnit.MILLISECONDS.sleep(70);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
