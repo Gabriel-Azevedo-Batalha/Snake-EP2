@@ -21,6 +21,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	
 	private Random r;
 	
+	private String tipoSnake = "Simple";
+	
 	private Corpo c;
 	private ArrayList<Corpo> snake;
 	private int coordX = 10, coordY = 10, size = 5;
@@ -66,7 +68,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	public boolean tick() {
 		
 		if(snake.size() == 0) {
-			c = new Corpo(coordX, coordY, 10);
+			c = new Corpo(coordX, coordY, 10, tipoSnake);
 			snake.add(c);
 		}
 		try {
@@ -78,13 +80,13 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		//ticks++;
 		
 		//if(ticks > 2000000) {
-			if(right) coordX++;
+			if(right) coordX ++;
 			if(left) coordX--;
 			if(down) coordY++;
 			if(up) coordY--;
 			
 			ticks = 0;
-			c = new Corpo(coordX, coordY, 10);
+			c = new Corpo(coordX, coordY, 10, tipoSnake);
 			snake.add(c);
 			
 			if(snake.size() > size) {

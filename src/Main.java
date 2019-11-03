@@ -1,13 +1,19 @@
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.JFrame;
 
 public class Main {
 	public Main() {
 		
+		
+		Menu menu = new Menu();
+		while(!menu.isStarted()) {
+			//Atribuição sem efeito para o while funcionar
+			menu = menu;
+		}
+		System.out.println("Start");
+		menu.getFrame().dispose();
 		JFrame frame = new JFrame();
 		Painel painel = new Painel();
+		//JButton button = new JButton("Start");
 		
 		frame.add(painel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,6 +29,7 @@ public class Main {
 				break;
 			}
 		}
+		
 	}
 	public static void main(String[] args) {
 		new Main();

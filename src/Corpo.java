@@ -1,16 +1,19 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.lang.String;
 
 public class Corpo {
 	
 	private int coordX, coordY, width, height;
+	private String snake;
 
-	public Corpo(int coordX, int coordY, int tileSize) {
+	public Corpo(int coordX, int coordY, int tileSize, String snake) {
 		
 		this.coordX = coordX;
 		this.coordY = coordY;
 		width = tileSize;
 		height = tileSize;
+		this.snake = snake;
 		
 	}
 	
