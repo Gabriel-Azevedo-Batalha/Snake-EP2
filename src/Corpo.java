@@ -25,6 +25,8 @@ public class Corpo {
 		
 		g.setColor(Color.GREEN);
 		g.fillRect(coordX*width, coordY*height, width, height);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(coordX*width, coordY*height, width/2, height/2);
 		
 	}
 

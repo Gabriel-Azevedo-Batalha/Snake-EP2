@@ -16,19 +16,21 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	private Thread thread;
 	private boolean running;
 	
+	private boolean SpecialFruit = false;
 	private Fruta fruta;
 	private ArrayList<Fruta> frutas;
+	private BigFruit bigFruit;
+	private ArrayList<BigFruit> bigFruits;
 	
-	private Random r;
+	
+	private Random r, gamble;
 	
 	private String tipoSnake = "Simple";
 	
 	private Corpo c;
 	private ArrayList<Corpo> snake;
-	private int coordX = 10, coordY = 10, size = 5;
+	private int coordX = 10, coordY = 10, size = 5, points = 0 ;
 	private boolean right = true, left = false, up = false, down = false;
-	
-	private int ticks = 0;
 	
 	public static final int width = 500, height = 500;
 	
@@ -39,8 +41,10 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 		snake = new ArrayList<Corpo>();
 		frutas = new ArrayList<Fruta>();
+		bigFruits = new ArrayList<BigFruit>();
 		
 		r = new Random();
+		gamble = new Random();
 		
 		start();
 	}
@@ -77,22 +81,19 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//ticks++;
-		
-		//if(ticks > 2000000) {
 			if(right) coordX ++;
 			if(left) coordX--;
 			if(down) coordY++;
 			if(up) coordY--;
 			
-			ticks = 0;
 			c = new Corpo(coordX, coordY, 10, tipoSnake);
 			snake.add(c);
 			
 			if(snake.size() > size) {
 				snake.remove(0);
 			}
-		//}
+
+		//Criação da simple fruit
 		if(frutas.size() == 0) {
 			int coordX = r.nextInt(48);
 			int coordY = r.nextInt(48);
@@ -105,6 +106,25 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				size++;
 				frutas.remove(i);
 				i++;
+			}
+		}
+		int gambled = gamble.nextInt(10000);
+		
+		if (SpecialFruit == false) {
+			if(gambled >= 0 && gambled <= 25) {
+				int coordX = r.nextInt(40);
+				int coordY = r.nextInt(40);
+				bigFruit = new BigFruit(coordX, coordY, 10);
+				bigFruits.add(bigFruit);
+				SpecialFruit = true;
+			}
+		}
+		for(int i=0;i<bigFruits.size();i++) {
+			if(coordX == bigFruits.get(i).getCoordX() && coordY == bigFruits.get(i).getCoordY()) {
+				size++;
+				bigFruits.remove(i);
+				i++;
+				SpecialFruit = false;
 			}
 		}
 		for(int i=0;i<snake.size();i++) {
@@ -126,13 +146,6 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		return true;
 	}
-	
-	public ArrayList<Fruta> getFrutas() {
-		return frutas;
-	}
-	public ArrayList<Corpo> getSnake() {
-		return snake;
-	}
 	public void paint(Graphics g) {
 		
 		g.clearRect(0, 0, width, height);
@@ -151,6 +164,9 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		for(int i=0;i<frutas.size();i++) {
 			frutas.get(i).draw(g);
+		}
+		for(int i=0;i<bigFruits.size();i++) {
+			bigFruits.get(i).draw(g);
 		}
 		
 	}

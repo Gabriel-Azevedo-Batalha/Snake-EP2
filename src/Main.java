@@ -9,7 +9,6 @@ public class Main {
 			//Atribuição sem efeito para o while funcionar
 			menu = menu;
 		}
-		System.out.println("Start");
 		menu.getFrame().dispose();
 		JFrame frame = new JFrame();
 		Painel painel = new Painel();
@@ -18,9 +17,10 @@ public class Main {
 		frame.add(painel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Snake EP2");
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		
-		frame.pack();
+		
 		frame.setVisible(true);
 		
 		//Game loop

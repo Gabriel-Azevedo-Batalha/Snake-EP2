@@ -13,15 +13,13 @@ public class Fruta {
 		height = tileSize;
 		
 	}
-	
-	public void tick() {
-		
-	}
-	
+
 	public void draw(Graphics g) {
 		
-		g.setColor(Color.RED);
+		g.setColor(Color.GREEN);
 		g.fillRect(coordX*width, coordY*height, width, height);
+		g.setColor(Color.WHITE);
+		g.fillRect(coordX*width, coordY*height, width/2, height/2);
 		
 	}
 

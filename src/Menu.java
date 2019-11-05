@@ -41,8 +41,8 @@ public class Menu {
 		statusLabel = new JLabel("Simple Snake selecionada", JLabel.CENTER);
 		statusLabel.setSize(400, 100);
 		
-		frame.setSize(600,500);
-		frame.setLocation(2000, 200);
+		frame.setSize(500,500);
+		//frame.setLocation(500, 200);
 		frame.setLayout(new GridLayout(2,1));
 		
 		startButton.setActionCommand("Start");
@@ -66,10 +66,12 @@ public class Menu {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Snake EP2");
-		// frame.setLocationRelativeTo(null);
 		frame.add(panel);
 		frame.add(statusLabel,BorderLayout.PAGE_END);
-		// frame.pack();
+		frame.pack();
+		frame.setSize(500,500);
+		frame.setLocationRelativeTo(null);
+		
 		frame.setVisible(true);
 	}
 	private class EventoBotao implements ActionListener{
