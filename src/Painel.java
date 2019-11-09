@@ -29,6 +29,9 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	private DecreaseFruit decreaseFruit;
 	private ArrayList<DecreaseFruit> decreaseFruits;
 	
+	private Wall wall;
+	private ArrayList<Wall> wall1, wall2, wall3, wall4;
+	
 	
 	private Random r, gamble;
 	
@@ -36,7 +39,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	
 	private Corpo c;
 	private ArrayList<Corpo> snake;
-	private int coordX = 10, coordY = 10, size = 5, points = 0 ;
+	private int coordX = 10, coordY = 7, size = 5, points = 0 ;
 	private boolean right = true, left = false, up = false, down = false;
 	
 	public static final int width = 500, height = 500;
@@ -46,6 +49,10 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		setPreferredSize(new Dimension(width, height));
 		addKeyListener(this);
 		
+		wall1 = new ArrayList<Wall>();
+		wall2 = new ArrayList<Wall>();
+		wall3 = new ArrayList<Wall>();
+		wall4 = new ArrayList<Wall>();
 		snake = new ArrayList<Corpo>();
 		frutas = new ArrayList<Fruta>();
 		bigFruits = new ArrayList<BigFruit>();
@@ -54,6 +61,23 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		timer = new Timer();
 		r = new Random();
 		gamble = new Random();
+		
+		for(int i=0;i<16;i++) {
+			wall = new Wall(10,17+i,10);
+			wall1.add(wall);
+		}
+		for(int i=0;i<16;i++) {
+			wall = new Wall(40,17+i,10);
+			wall2.add(wall);
+		}
+		for(int i=0;i<16;i++) {
+			wall = new Wall(17+i,10,10);
+			wall3.add(wall);
+		}
+		for(int i=0;i<16;i++) {
+			wall = new Wall(17+i,40,10);
+			wall4.add(wall);
+		}
 		
 		start();
 	}
@@ -107,7 +131,10 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		if(frutas.size() == 0) {
 			int coordX = r.nextInt(45);
 			int coordY = r.nextInt(45);
-			
+			if (WallCollide(coordX, coordY) == 1) coordX++;
+			if (WallCollide(coordX, coordY) == 2) coordX--;
+			if (WallCollide(coordX, coordY) == 3) coordY++;
+			if (WallCollide(coordX, coordY) == 4) coordY--;
 			fruta = new Fruta(coordX, coordY, 10);
 			frutas.add(fruta);
 		}
@@ -126,10 +153,15 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 		//Geração de fruta especial
 		if (SpecialFruit == false && timer.isDelay() == false) {
-			//Gerou BigFruit
+			int coordX = r.nextInt(40);
+			int coordY = r.nextInt(40);
+			if (WallCollide(coordX, coordY) == 1) coordX++;
+			if (WallCollide(coordX, coordY) == 2) coordX--;
+			if (WallCollide(coordX, coordY) == 3) coordY++;
+			if (WallCollide(coordX, coordY) == 4) coordY--;
+				//Gerou BigFruit
 			if(gambled >= 0 && gambled <= 4) {
-				int coordX = r.nextInt(40);
-				int coordY = r.nextInt(40);
+				
 				bigFruit = new BigFruit(coordX, coordY, 10);
 				bigFruits.add(bigFruit);
 				SpecialFruit = true;
@@ -137,8 +169,6 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			}
 			//Gerou BombFruit
 			if(gambled >= 5 && gambled <= 8) {
-				int coordX = r.nextInt(40);
-				int coordY = r.nextInt(40);
 				bombFruit = new BombFruit(coordX, coordY, 10);
 				bombFruits.add(bombFruit);
 				SpecialFruit = true;
@@ -146,8 +176,6 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			}
 			//Gerou DecreaseFruit
 			if(gambled >= 9 && gambled <= 10) {
-				int coordX = r.nextInt(40);
-				int coordY = r.nextInt(40);
 				decreaseFruit = new DecreaseFruit(coordX, coordY, 10);
 				decreaseFruits.add(decreaseFruit);
 				SpecialFruit = true;
@@ -228,6 +256,13 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			}
 		}
 		
+		//Colisão Wall
+		if (WallCollide(coordX, coordY) != 0) {
+			System.out.println("Game over");
+			stop();
+			return false;
+		}
+			
 		//Colisão bordas
 		if (coordX < 0 || coordX > 49 || coordY < 0 || coordY > 49) {
 			//Temporary
@@ -254,6 +289,19 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			g.drawLine(0, i*10, height, i*10);
 		}
 		
+		//Draw Walls
+				for(int i=0;i<wall1.size();i++) {
+					wall1.get(i).draw(g);
+				}
+				for(int i=0;i<wall2.size();i++) {
+					wall2.get(i).draw(g);
+				}
+				for(int i=0;i<wall3.size();i++) {
+					wall3.get(i).draw(g);
+				}
+				for(int i=0;i<wall4.size();i++) {
+					wall4.get(i).draw(g);
+				}
 		//Draw Snake
 		for(int i=0;i<snake.size();i++) {
 			snake.get(i).draw(g);
@@ -280,7 +328,30 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		
 	}
-
+	public int WallCollide(int coordX, int coordY) {
+		for(int i=0;i<wall1.size();i++) {
+			if((coordX == wall1.get(i).getCoordX() && coordY == wall1.get(i).getCoordY())) {
+				return 1;
+			}
+		}
+		for(int i=0;i<wall2.size();i++) {
+			if((coordX == wall2.get(i).getCoordX() && coordY == wall2.get(i).getCoordY())) {
+				return 2;
+			}
+		}
+		for(int i=0;i<wall3.size();i++) {
+			if((coordX == wall3.get(i).getCoordX() && coordY == wall3.get(i).getCoordY())) {
+				return 3;
+			}
+		}
+		for(int i=0;i<wall4.size();i++) {
+			if((coordX == wall4.get(i).getCoordX() && coordY == wall4.get(i).getCoordY())) {
+				return 4;
+			}
+		}
+		return 0;
+	}
+	
 	@Override
 	public void run() {
 		while(running) {
