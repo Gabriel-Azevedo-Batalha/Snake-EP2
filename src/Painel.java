@@ -26,6 +26,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	private ArrayList<BigFruit> bigFruits;
 	private BombFruit bombFruit;
 	private ArrayList<BombFruit> bombFruits;
+	private DecreaseFruit decreaseFruit;
+	private ArrayList<DecreaseFruit> decreaseFruits;
 	
 	
 	private Random r, gamble;
@@ -47,7 +49,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		snake = new ArrayList<Corpo>();
 		frutas = new ArrayList<Fruta>();
 		bigFruits = new ArrayList<BigFruit>();
-		bombFruits= new ArrayList<BombFruit>();
+		bombFruits = new ArrayList<BombFruit>();
+		decreaseFruits = new ArrayList<DecreaseFruit>();
 		timer = new Timer();
 		r = new Random();
 		gamble = new Random();
@@ -98,6 +101,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			if(snake.size() > size) {
 				snake.remove(0);
 			}
+			
 
 		//Criação da SimpleFruit
 		if(frutas.size() == 0) {
@@ -123,7 +127,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		//Geração de fruta especial
 		if (SpecialFruit == false && timer.isDelay() == false) {
 			//Gerou BigFruit
-			if(gambled >= 0 && gambled <= 5) {
+			if(gambled >= 0 && gambled <= 4) {
 				int coordX = r.nextInt(40);
 				int coordY = r.nextInt(40);
 				bigFruit = new BigFruit(coordX, coordY, 10);
@@ -132,11 +136,20 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				timer.setSumir(true);
 			}
 			//Gerou BombFruit
-			if(gambled >= 6 && gambled <= 10) {
+			if(gambled >= 5 && gambled <= 8) {
 				int coordX = r.nextInt(40);
 				int coordY = r.nextInt(40);
 				bombFruit = new BombFruit(coordX, coordY, 10);
 				bombFruits.add(bombFruit);
+				SpecialFruit = true;
+				timer.setSumir(true);
+			}
+			//Gerou DecreaseFruit
+			if(gambled >= 9 && gambled <= 10) {
+				int coordX = r.nextInt(40);
+				int coordY = r.nextInt(40);
+				decreaseFruit = new DecreaseFruit(coordX, coordY, 10);
+				decreaseFruits.add(decreaseFruit);
 				SpecialFruit = true;
 				timer.setSumir(true);
 			}
@@ -162,24 +175,46 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		
 		//Colisão BombFruit
-			for(int i=0;i<bombFruits.size();i++) {
-				if((coordX == bombFruits.get(i).getCoordX() && coordY == bombFruits.get(i).getCoordY())) {
-					bombFruits.remove(i);
-					i++;
-					SpecialFruit = false;
-					timer.setDelay(true);
-					timer.setSumir(false);
-					System.out.println("Game over");
-					stop();
-					return false;
-					}
-				if(!timer.isSumir()) {
-					bombFruits.remove(i);
-					i++;
-					SpecialFruit = false;
-					timer.setDelay(true);
+		for(int i=0;i<bombFruits.size();i++) {
+			if((coordX == bombFruits.get(i).getCoordX() && coordY == bombFruits.get(i).getCoordY())) {
+				bombFruits.remove(i);
+				i++;
+				SpecialFruit = false;
+				timer.setDelay(true);
+				timer.setSumir(false);
+				System.out.println("Game over");
+				stop();
+				return false;
 				}
+			if(!timer.isSumir()) {
+				bombFruits.remove(i);
+				i++;
+				SpecialFruit = false;
+				timer.setDelay(true);
 			}
+		}
+		
+		//Colisão DecreaseFruit
+		for(int i=0;i<decreaseFruits.size();i++) {
+			if((coordX == decreaseFruits.get(i).getCoordX() && coordY == decreaseFruits.get(i).getCoordY())) {
+				size = 5;
+				decreaseFruits.remove(i);
+				i++;
+				SpecialFruit = false;
+				timer.setDelay(true);
+				timer.setSumir(false);
+				break;
+			}
+			if(!timer.isSumir()) {
+				decreaseFruits.remove(i);
+				i++;
+				SpecialFruit = false;
+				timer.setDelay(true);
+			}
+		}
+		if(snake.size() > size) {
+			snake.remove(0);
+		}
 		
 		//Colisão Corpo
 		for(int i=0;i<snake.size();i++) {
@@ -207,28 +242,41 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	public void paint(Graphics g2) {
 		Graphics2D g;
 		g = (Graphics2D) g2;
+		
+		//Draw Grid
 		g.clearRect(0, 0, width, height);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
-		
 		for(int i=0;i<width/10;i++) {
 			g.drawLine(i*10, 0, i*10, height);
 		}
-		
 		for(int i=0;i<height/10;i++) {
 			g.drawLine(0, i*10, height, i*10);
 		}
+		
+		//Draw Snake
 		for(int i=0;i<snake.size();i++) {
 			snake.get(i).draw(g);
 		}
+		
+		//Draw SimpleFruit
 		for(int i=0;i<frutas.size();i++) {
 			frutas.get(i).draw(g);
 		}
+		
+		//Draw BigFruit
 		for(int i=0;i<bigFruits.size();i++) {
 			bigFruits.get(i).draw(g);
 		}
+		
+		//Draw BombFruit
 		for(int i=0;i<bombFruits.size();i++) {
 			bombFruits.get(i).draw(g);
+		}
+		
+		//Draw DecreaseFruit
+		for(int i=0;i<decreaseFruits.size();i++) {
+			decreaseFruits.get(i).draw(g);
 		}
 		
 	}
