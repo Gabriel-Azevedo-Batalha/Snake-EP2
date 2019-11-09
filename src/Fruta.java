@@ -1,9 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Fruta {
-	
-	private int coordX, coordY, width, height;
+public class Fruta extends FrutasEspeciais{
 	
 	public Fruta(int coordX, int coordY, int tileSize) {
 		
@@ -22,20 +20,5 @@ public class Fruta {
 		g.fillRect(coordX*width, coordY*height, width/2, height/2);
 		
 	}
-
-	public int getCoordX() {
-		return coordX;
-	}
-
-	public void setCoordX(int coordX) {
-		this.coordX = coordX;
-	}
-
-	public int getCoordY() {
-		return coordY;
-	}
-
-	public void setCoordY(int coordY) {
-		this.coordY = coordY;
-	}
+	
 }

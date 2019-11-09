@@ -1,6 +1,8 @@
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -15,12 +17,15 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	
 	private Thread thread;
 	private boolean running;
+	private Timer timer;
 	
 	private boolean SpecialFruit = false;
 	private Fruta fruta;
 	private ArrayList<Fruta> frutas;
 	private BigFruit bigFruit;
 	private ArrayList<BigFruit> bigFruits;
+	private BombFruit bombFruit;
+	private ArrayList<BombFruit> bombFruits;
 	
 	
 	private Random r, gamble;
@@ -42,7 +47,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		snake = new ArrayList<Corpo>();
 		frutas = new ArrayList<Fruta>();
 		bigFruits = new ArrayList<BigFruit>();
-		
+		bombFruits= new ArrayList<BombFruit>();
+		timer = new Timer();
 		r = new Random();
 		gamble = new Random();
 		
@@ -93,14 +99,16 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				snake.remove(0);
 			}
 
-		//Criação da simple fruit
+		//Criação da SimpleFruit
 		if(frutas.size() == 0) {
-			int coordX = r.nextInt(48);
-			int coordY = r.nextInt(48);
+			int coordX = r.nextInt(45);
+			int coordY = r.nextInt(45);
 			
 			fruta = new Fruta(coordX, coordY, 10);
 			frutas.add(fruta);
 		}
+		
+		//Colisão SimpleFruit
 		for(int i=0;i<frutas.size();i++) {
 			if(coordX == frutas.get(i).getCoordX() && coordY == frutas.get(i).getCoordY()) {
 				size++;
@@ -108,25 +116,72 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				i++;
 			}
 		}
-		int gambled = gamble.nextInt(10000);
 		
-		if (SpecialFruit == false) {
-			if(gambled >= 0 && gambled <= 25) {
+		//Randomizador fruta especial
+		int gambled = gamble.nextInt(10);
+		
+		//Geração de fruta especial
+		if (SpecialFruit == false && timer.isDelay() == false) {
+			//Gerou BigFruit
+			if(gambled >= 0 && gambled <= 5) {
 				int coordX = r.nextInt(40);
 				int coordY = r.nextInt(40);
 				bigFruit = new BigFruit(coordX, coordY, 10);
 				bigFruits.add(bigFruit);
 				SpecialFruit = true;
+				timer.setSumir(true);
+			}
+			//Gerou BombFruit
+			if(gambled >= 6 && gambled <= 10) {
+				int coordX = r.nextInt(40);
+				int coordY = r.nextInt(40);
+				bombFruit = new BombFruit(coordX, coordY, 10);
+				bombFruits.add(bombFruit);
+				SpecialFruit = true;
+				timer.setSumir(true);
 			}
 		}
+		
+		//Colisão BigFruit
 		for(int i=0;i<bigFruits.size();i++) {
-			if(coordX == bigFruits.get(i).getCoordX() && coordY == bigFruits.get(i).getCoordY()) {
+			if((coordX == bigFruits.get(i).getCoordX() && coordY == bigFruits.get(i).getCoordY())) {
 				size++;
 				bigFruits.remove(i);
 				i++;
 				SpecialFruit = false;
+				timer.setDelay(true);
+				timer.setSumir(false);
+				break;
+			}
+			if(!timer.isSumir()) {
+				bigFruits.remove(i);
+				i++;
+				SpecialFruit = false;
+				timer.setDelay(true);
 			}
 		}
+		
+		//Colisão BombFruit
+			for(int i=0;i<bombFruits.size();i++) {
+				if((coordX == bombFruits.get(i).getCoordX() && coordY == bombFruits.get(i).getCoordY())) {
+					bombFruits.remove(i);
+					i++;
+					SpecialFruit = false;
+					timer.setDelay(true);
+					timer.setSumir(false);
+					System.out.println("Game over");
+					stop();
+					return false;
+					}
+				if(!timer.isSumir()) {
+					bombFruits.remove(i);
+					i++;
+					SpecialFruit = false;
+					timer.setDelay(true);
+				}
+			}
+		
+		//Colisão Corpo
 		for(int i=0;i<snake.size();i++) {
 			if(coordX == snake.get(i).getCoordX() && coordY == snake.get(i).getCoordY()) {
 				if(i != snake.size() -1) {
@@ -137,6 +192,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				}
 			}
 		}
+		
+		//Colisão bordas
 		if (coordX < 0 || coordX > 49 || coordY < 0 || coordY > 49) {
 			//Temporary
 			System.out.println("Game over");
@@ -146,8 +203,10 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		return true;
 	}
-	public void paint(Graphics g) {
-		
+	
+	public void paint(Graphics g2) {
+		Graphics2D g;
+		g = (Graphics2D) g2;
 		g.clearRect(0, 0, width, height);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
@@ -167,6 +226,9 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		for(int i=0;i<bigFruits.size();i++) {
 			bigFruits.get(i).draw(g);
+		}
+		for(int i=0;i<bombFruits.size();i++) {
+			bombFruits.get(i).draw(g);
 		}
 		
 	}
