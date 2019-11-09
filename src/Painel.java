@@ -35,20 +35,21 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	
 	private Random r, gamble;
 	
-	private String tipoSnake = "Simple";
+	private String tipoSnake;
 	
 	private Corpo c;
 	private ArrayList<Corpo> snake;
-	private int coordX = 10, coordY = 7, size = 5, points = 0 ;
+	private int coordX = 10, coordY = 7, size = 5, points = 0, multiplier = 1 ;
 	private boolean right = true, left = false, up = false, down = false;
 	
 	public static final int width = 500, height = 500;
 	
-	public Painel() {
+	public Painel(String tipoSnake) {
 		setFocusable(true);
 		setPreferredSize(new Dimension(width, height));
 		addKeyListener(this);
-		
+		this.tipoSnake = tipoSnake;
+		if(tipoSnake == "Star") multiplier = 2;
 		wall1 = new ArrayList<Wall>();
 		wall2 = new ArrayList<Wall>();
 		wall3 = new ArrayList<Wall>();
@@ -129,8 +130,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 
 		//Criação da SimpleFruit
 		if(frutas.size() == 0) {
-			int coordX = r.nextInt(45);
-			int coordY = r.nextInt(45);
+			int coordX = r.nextInt(48)+1;
+			int coordY = r.nextInt(48)+1;
 			if (WallCollide(coordX, coordY) == 1) coordX++;
 			if (WallCollide(coordX, coordY) == 2) coordX--;
 			if (WallCollide(coordX, coordY) == 3) coordY++;
@@ -145,6 +146,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				size++;
 				frutas.remove(i);
 				i++;
+				points += 10*multiplier;
 			}
 		}
 		
@@ -153,8 +155,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 		//Geração de fruta especial
 		if (SpecialFruit == false && timer.isDelay() == false) {
-			int coordX = r.nextInt(40);
-			int coordY = r.nextInt(40);
+			int coordX = r.nextInt(48)+1;
+			int coordY = r.nextInt(48)+1;
 			if (WallCollide(coordX, coordY) == 1) coordX++;
 			if (WallCollide(coordX, coordY) == 2) coordX--;
 			if (WallCollide(coordX, coordY) == 3) coordY++;
@@ -192,6 +194,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				SpecialFruit = false;
 				timer.setDelay(true);
 				timer.setSumir(false);
+				points += 20*multiplier;
 				break;
 			}
 			if(!timer.isSumir()) {
@@ -257,20 +260,24 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		
 		//Colisão Wall
-		if (WallCollide(coordX, coordY) != 0) {
+		if (WallCollide(coordX, coordY) != 0 && tipoSnake != "Kitty") {
 			System.out.println("Game over");
 			stop();
 			return false;
 		}
 			
 		//Colisão bordas
-		if (coordX < 0 || coordX > 49 || coordY < 0 || coordY > 49) {
+		if (coordX < -1) coordX = 50;
+		if (coordX > 50) coordX = -1;
+		if (coordY < -1) coordY = 50;
+		if (coordY > 50) coordY = -1;
+		//if (coordX < 0 || coordX > 49 || coordY < 0 || coordY > 49) {
 			//Temporary
-			System.out.println("Game over");
-			stop();
-			return false;
+			//System.out.println("Game over");
+			//stop();
+			//return false;
 			
-		}
+		//}
 		return true;
 	}
 	
@@ -326,7 +333,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		for(int i=0;i<decreaseFruits.size();i++) {
 			decreaseFruits.get(i).draw(g);
 		}
-		
+		g.setColor(Color.WHITE);
+		g.drawString(String.valueOf(points), 0, 10);
 	}
 	public int WallCollide(int coordX, int coordY) {
 		for(int i=0;i<wall1.size();i++) {

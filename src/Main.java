@@ -9,11 +9,11 @@ public class Main {
 			//Atribuição sem efeito para o while funcionar
 			menu = menu;
 		}
+		String tipoSnake = menu.getSnake();
 		menu.getFrame().dispose();
 		JFrame frame = new JFrame();
-		Painel painel = new Painel();
+		Painel painel = new Painel(tipoSnake);
 		//JButton button = new JButton("Start");
-		
 		frame.add(painel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Snake EP2");
