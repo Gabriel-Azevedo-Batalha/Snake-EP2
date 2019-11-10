@@ -79,7 +79,6 @@ public class Menu {
 		public void actionPerformed(ActionEvent e) {
 			String comando = e.getActionCommand();
 			if(comando.equals("Start")) {
-				//
 				started = true;
 			}
 			else if(comando.equals("Simple")) {

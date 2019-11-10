@@ -9,8 +9,8 @@ public class Corpo {
 	private String snake;
 	private Random r;
 
+	//Construtor
 	public Corpo(int coordX, int coordY, int tileSize, String snake) {
-		
 		r = new Random();
 		this.coordX = coordX;
 		this.coordY = coordY;
@@ -19,28 +19,30 @@ public class Corpo {
 		this.snake = snake;
 		
 	}
-	
 	public void tick() {
-		
 	}
 	
+	//Draw
 	public void draw(Graphics g) {
-		
+		//Draw Simple Snake
 		if(snake == "Simple"){
 			g.setColor(Color.GREEN);
 			g.fillRect(coordX*width, coordY*height, width, height);
 			g.setColor(Color.DARK_GRAY);
 			g.fillRect(coordX*width, coordY*height, width/2, height/2);
 		}
+		//Draw Kitty Snake
 		if(snake == "Kitty"){
 			g.setColor(Color.ORANGE);
 			g.fillRect(coordX*width, coordY*height, width, height);
 			g.setColor(Color.DARK_GRAY);
 			g.fillRect(coordX*width, coordY*height, width/2, height/2);
 		}
+		//Draw Star Snake
 		if(snake == "Star"){
 			g.setColor(Color.YELLOW);
 			g.fillRect(coordX*width, coordY*height, width, height);
+			//Brilho
 			rx = r.nextInt(5);
 			ry = r.nextInt(5);
 			g.setColor(Color.WHITE);

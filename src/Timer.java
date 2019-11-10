@@ -3,7 +3,7 @@ import java.util.concurrent.TimeUnit;
 public class Timer implements Runnable{
 
 	private Thread thread;
-	private boolean running, sumir, delay, update;
+	private boolean running, sumir, delay;
 	
 	public boolean isSumir() {
 		return sumir;
@@ -17,12 +17,15 @@ public class Timer implements Runnable{
 	public void setDelay(boolean delay) {
 		this.delay = delay;
 	}
+	
+	//Construtor
 	public Timer() {
 		sumir = false;
 		delay = true;
 		start();
 		
 	}
+	//Thread start
 	public void start() {
 		
 		running = true;
@@ -31,6 +34,7 @@ public class Timer implements Runnable{
 		
 	}
 	
+	//Thread stop
 	public void stop() {
 		
 		running = false;
@@ -42,9 +46,10 @@ public class Timer implements Runnable{
 		}
 		
 	}
+	
+	//Thread run
 	@Override
 	public void run() {
-		System.out.println("Running");
 		while(running) {
 			
 			
@@ -54,14 +59,12 @@ public class Timer implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//System.out.println(sumir);
-			
-			
-			
 			if(sumir == true) Sumir();
 			if(delay == true) Delay();
 		}
 	}
+	
+	//Timer para fruta especial sumir
 	public void Sumir() {
 		try {
 			TimeUnit.SECONDS.sleep(10);
@@ -71,6 +74,8 @@ public class Timer implements Runnable{
 		}
 		sumir = false;
 	}
+	
+	//Delay no spawn de frutas especiais
 	public void Delay() {
 		try {
 			TimeUnit.SECONDS.sleep(20);
@@ -80,6 +85,4 @@ public class Timer implements Runnable{
 		}
 		delay = false;
 	}
-	
-
 }

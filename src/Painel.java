@@ -1,4 +1,3 @@
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -44,6 +43,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	
 	public static final int width = 500, height = 500;
 	
+	//Construtor
 	public Painel(String tipoSnake) {
 		setFocusable(true);
 		setPreferredSize(new Dimension(width, height));
@@ -83,6 +83,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		start();
 	}
 	
+	//Start thread
 	public void start() {
 		
 		running = true;
@@ -91,6 +92,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 	}
 	
+	//Stop thread
 	public void stop() {
 		
 		running = false;
@@ -103,29 +105,35 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 	}
 	
+	//Update física
 	public boolean tick() {
 		
+		//Criação Snake
 		if(snake.size() == 0) {
 			c = new Corpo(coordX, coordY, 10, tipoSnake);
 			snake.add(c);
 		}
+		
+		//Velocidade do jogo
 		try {
 			TimeUnit.MILLISECONDS.sleep(70);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			if(right) coordX ++;
-			if(left) coordX--;
-			if(down) coordY++;
-			if(up) coordY--;
+		
+		//Update direcional
+		if(right) coordX ++;
+		if(left) coordX--;
+		if(down) coordY++;
+		if(up) coordY--;
 			
-			c = new Corpo(coordX, coordY, 10, tipoSnake);
-			snake.add(c);
-			
-			if(snake.size() > size) {
-				snake.remove(0);
-			}
+		//Update posição da snake
+		c = new Corpo(coordX, coordY, 10, tipoSnake);
+		snake.add(c);	
+		if(snake.size() > size) {
+			snake.remove(0);
+		}
 			
 
 		//Criação da SimpleFruit
@@ -161,7 +169,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 			if (WallCollide(coordX, coordY) == 2) coordX--;
 			if (WallCollide(coordX, coordY) == 3) coordY++;
 			if (WallCollide(coordX, coordY) == 4) coordY--;
-				//Gerou BigFruit
+			//Gerou BigFruit
 			if(gambled >= 0 && gambled <= 4) {
 				
 				bigFruit = new BigFruit(coordX, coordY, 10);
@@ -213,7 +221,6 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 				SpecialFruit = false;
 				timer.setDelay(true);
 				timer.setSumir(false);
-				System.out.println("Game over");
 				stop();
 				return false;
 				}
@@ -251,7 +258,6 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		for(int i=0;i<snake.size();i++) {
 			if(coordX == snake.get(i).getCoordX() && coordY == snake.get(i).getCoordY()) {
 				if(i != snake.size() -1) {
-					System.out.println("Game over");
 					stop();
 					return false;
 					
@@ -261,7 +267,6 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		
 		//Colisão Wall
 		if (WallCollide(coordX, coordY) != 0 && tipoSnake != "Kitty") {
-			System.out.println("Game over");
 			stop();
 			return false;
 		}
@@ -271,16 +276,11 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		if (coordX > 50) coordX = -1;
 		if (coordY < -1) coordY = 50;
 		if (coordY > 50) coordY = -1;
-		//if (coordX < 0 || coordX > 49 || coordY < 0 || coordY > 49) {
-			//Temporary
-			//System.out.println("Game over");
-			//stop();
-			//return false;
 			
-		//}
 		return true;
 	}
 	
+	//Draw
 	public void paint(Graphics g2) {
 		Graphics2D g;
 		g = (Graphics2D) g2;
@@ -336,6 +336,8 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		g.setColor(Color.WHITE);
 		g.drawString(String.valueOf(points), 0, 10);
 	}
+	
+	//Colisão com os walls
 	public int WallCollide(int coordX, int coordY) {
 		for(int i=0;i<wall1.size();i++) {
 			if((coordX == wall1.get(i).getCoordX() && coordY == wall1.get(i).getCoordY())) {
@@ -360,15 +362,16 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		return 0;
 	}
 	
+	//Thread para o Draw
 	@Override
 	public void run() {
 		while(running) {
-			//tick();
 			repaint();
 		}
 		
 	}
 
+	//Key Events
 	@Override
 	public void keyPressed(KeyEvent event) {
 
@@ -401,16 +404,16 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 		
 	}
-
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
-
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
+	}
+	
+	public int getPoints() {
+		return points;
 	}
 }
