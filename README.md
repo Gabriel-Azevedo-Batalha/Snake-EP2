@@ -1,29 +1,19 @@
-# Snake da Carla
+# SnakeEP2
 
-Essse projeto bla bla oo, oaoa
+Essse projeto é o jogo snake com as seguintes funionalidades:
 
-tem as seguintes funionalidades:
-
-- Implementado as snakes **comum** e **kitty**
+- Implementado as snakes **Simple** , **Kitty** e **Star**
 - Implementado a fruta simples
-
+- Implementado as frutas especiais (**BombFruit**, **BigFruit** e **DecreaseFruit**) que aparecem em intervalos de tempo definidos e somem depois de um tempo
+- Implementado barreiras internas no jogo
+- Implementado a função de atravessar as bordas do jogo aparecendo no outro lado 
 
 # Como Jogar
 
 1. Entre na pasta bin
-2. Execute o programa (tenha um virtual machine java instalado)
-3. Comandos
-
-# Como compilar
-
-No terminal
-
-```javac Nomeprograma.java```
-
-executar
-
-```NomePrograma```
-
+2. Execute o programa SnakeEP2.jar (tenha um virtual machine java instalado)
+3. Escolher a Snake e iniciar o jogo
+4. Controles : Setas para controlar a Snake
 
 # EP2 - OO 2019.2 (UnB - Gama)
 

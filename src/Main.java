@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.JFrame;
 
 public class Main {
@@ -11,8 +13,13 @@ public class Main {
 			//Menu loop
 			Menu menu = new Menu();
 			while(!menu.isStarted()) {
-				//Atribuição sem efeito para o while funcionar
-				menu = menu;
+				//Sleep para o while funcionar
+				try {
+					TimeUnit.MILLISECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			String tipoSnake = menu.getSnake();
@@ -41,8 +48,13 @@ public class Main {
 			GameoverScreen screen = new GameoverScreen(points);
 			screen.setRestarted(false);
 			while(!screen.isRestarted()) {
-				//Atribuição sem efeito para o while funcionar
-				screen = screen;
+				//Sleep para o while funcionar
+				try {
+					TimeUnit.MILLISECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			exited = screen.isExited();
 			screen.getFrame().dispose();

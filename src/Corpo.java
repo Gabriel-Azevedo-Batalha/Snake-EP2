@@ -19,8 +19,6 @@ public class Corpo {
 		this.snake = snake;
 		
 	}
-	public void tick() {
-	}
 	
 	//Draw
 	public void draw(Graphics g) {

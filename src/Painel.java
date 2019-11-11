@@ -272,10 +272,10 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 		}
 			
 		//Colisão bordas
-		if (coordX < -1) coordX = 50;
-		if (coordX > 50) coordX = -1;
-		if (coordY < -1) coordY = 50;
-		if (coordY > 50) coordY = -1;
+		if (coordX <= -1) coordX = 49;
+		if (coordX >= 50) coordX = 0;
+		if (coordY <= -1) coordY = 49;
+		if (coordY >= 50) coordY = 0;
 			
 		return true;
 	}
