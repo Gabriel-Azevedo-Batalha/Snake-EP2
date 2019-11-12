@@ -5,6 +5,7 @@ Essse projeto é o jogo snake com as seguintes funionalidades:
 - Implementado as snakes **Simple** , **Kitty** e **Star**
 - Implementado a fruta simples
 - Implementado as frutas especiais (**BombFruit**, **BigFruit** e **DecreaseFruit**) que aparecem em paralelo com a simples em intervalos de tempo definidos e somem depois de um tempo
+- Taxas de spawn : **BigFruit(5/11)**, **BombFruit(4/11)** e **DecreaseFruit(2/11)**
 - Implementado barreiras internas no jogo
 - Implementado a função de atravessar as bordas do jogo aparecendo no outro lado 
 
