@@ -41,7 +41,7 @@ public class Painel extends JPanel implements Runnable, KeyListener {
 	private int coordX = 10, coordY = 7, size = 5, points = 0, multiplier = 1 ;
 	private boolean right = true, left = false, up = false, down = false;
 	
-	public static final int width = 500, height = 500;
+	private static final int width = 500, height = 500;
 	
 	//Construtor
 	public Painel(String tipoSnake) {
